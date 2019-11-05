@@ -6,7 +6,11 @@ function generateURL(numberOfDogs){
 
 function listenToNumber(){
     let numberDogs = $('form').find('input[type="number"]').val();
-   return generateURL(numberDogs);
+    if (numberDogs <= 50 && numberDogs >= 1){
+    return generateURL(numberDogs);
+    }else{
+        throw alert('Your number must be between 1 and 50');
+    }
 
 }
 
@@ -24,7 +28,12 @@ function displayResults(responseJson) {
 
 function getDogImages(URL){
     fetch(URL)
-    .then(response => response.json())
+    .then(response => {
+        if(response.ok){
+            return response.json();
+        }
+        throw new Error (response.statusText);
+    })
     .then(responseJson => displayResults(responseJson))
     .catch(error => alert('Something went wrong'));
 }
